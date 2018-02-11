@@ -11,10 +11,15 @@ func Spans(total, spanSize int) []Span {
 	for i := 0; i < total; i += c {
 		if i+spanSize <= total {
 			c = spanSize
+			spans = append(spans, Span{Start: i, Count: c})
 		} else {
 			c = total - i
+			if c > spanSize/2 || len(spans) == 0 {
+				spans = append(spans, Span{Start: i, Count: c})
+			} else {
+				spans[len(spans)-1].Count += c
+			}
 		}
-		spans = append(spans, Span{Start: i, Count: c})
 	}
 	return spans
 }
